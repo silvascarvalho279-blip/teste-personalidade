@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Descubra o seu Perfil</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1efff;
+      color: #292344;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 35px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px #29234420;
+    }
+
+    h1 { color: #6545c5; text-align: center; }
+    .intro { text-align: center; color: #625b78; }
+    h2 { font-size: 18px; margin-top: 25px; }
+
+    label { display: block; margin: 12px 0; }
+    input[type="text"], input[type="email"], input[type="date"] {
+      width: 100%;
+      padding: 11px;
+      margin-top: 6px;
+      border: 1px solid #c9c1e8;
+      border-radius: 8px;
+    }
+
+    .question {
+      padding: 15px;
+      margin: 18px 0;
+      background: #f8f6ff;
+      border-radius: 10px;
+    }
+
+    .question label { cursor: pointer; }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 9px;
+      background: #6545c5;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover { background: #4d329e; }
+
+    .terms {
+      margin: 18px 0;
+      font-size: 8px;
+      color: #9994a8;
+    }
+
+    #resultado {
+      display: none;
+      margin-top: 22px;
+      padding: 18px;
+      background: #eee8ff;
+      border-radius: 10px;
+    }
+
+    .nota {
+      font-size: 12px;
+      color: #625b78;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>✨ Descubra o seu Perfil</h1>
+    <p class="intro">
+      Responda a 4 perguntas e descubra qual perfil combina
+      mais com as suas escolhas!
+    </p>
+
+    <form id="teste">
+      <h2>Os seus dados</h2>
+
+      <label>Nome (opcional)
+        <input type="text" id="nome" placeholder="Nome fictício">
+      </label>
+
+      <label>E-mail (opcional)
+        <input type="email" id="email" placeholder="exemplo@email.com">
+      </label>
+
+      <label>Data de nascimento (opcional)
+        <input type="date" id="nascimento">
+      </label>
+
+      <h2>As suas escolhas</h2>
+
+      <div class="question">
+        <p><strong>1. Como prefere passar o tempo livre?</strong></p>
+        <label><input type="radio" name="p1" value="A" required> A explorar novas ideias</label>
+        <label><input type="radio" name="p1" value="B"> A conviver com amigos</label>
+        <label><input type="radio" name="p1" value="C"> A descansar tranquilamente</label>
+      </div>
+
+      <div class="question">
+        <p><strong>2. Perante um problema, o que faz?</strong></p>
+        <label><input type="radio" name="p2" value="A" required> Analiso todas as possibilidades</label>
+        <label><input type="radio" name="p2" value="B"> Peço opiniões a outras pessoas</label>
+        <label><input type="radio" name="p2" value="C"> Penso com calma antes de agir</label>
+      </div>
+
+      <div class="question">
+        <p><strong>3. Como os amigos o descreveriam?</strong></p>
+        <label><input type="radio" name="p3" value="A" required> Curioso e criativo</label>
+        <label><input type="radio" name="p3" value="B"> Comunicativo e divertido</label>
+        <label><input type="radio" name="p3" value="C"> Calmo e ponderado</label>
+      </div>
+
+      <div class="question">
+        <p><strong>4. Qual destas qualidades valoriza mais?</strong></p>
+        <label><input type="radio" name="p4" value="A" required> Conhecimento</label>
+        <label><input type="radio" name="p4" value="B"> Amizade</label>
+        <label><input type="radio" name="p4" value="C"> Equilíbrio</label>
+      </div>
+
+      <div class="terms">
+        <label>
+          <input type="checkbox" id="consentimento" required>
+          Aceito os termos de utilização e autorizo, para esta simulação,
+          o tratamento e a partilha dos dados fornecidos.
+          <a href="#privacidade">Política de privacidade</a>.
+        </label>
+      </div>
+
+      <p class="nota" id="privacidade">
+        Demonstração académica de interface. Os dados não são enviados
+        para um servidor. Não introduza dados pessoais reais.
+      </p>
+
+      <button type="submit">Ver Resultado</button>
+    </form>
+
+    <section id="resultado" aria-live="polite"></section>
+  </main>
+
+  <script>
+    document.getElementById("teste").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const respostas = ["p1", "p2", "p3", "p4"].map(nome =>
+        document.querySelector('input[name="' + nome + '"]:checked').value
+      );
+
+      const contagem = { A: 0, B: 0, C: 0 };
+      respostas.forEach(resposta => contagem[resposta]++);
+
+      let perfil = "Pensador Criativo";
+      let descricao = "Gosta de explorar ideias e encontrar novas soluções.";
+
+      if (contagem.B > contagem.A && contagem.B >= contagem.C) {
+        perfil = "Comunicador";
+        descricao = "Valoriza a amizade, a comunicação e as experiências partilhadas.";
+      } else if (contagem.C > contagem.A && contagem.C > contagem.B) {
+        perfil = "Espírito Tranquilo";
+        descricao = "Prefere a calma, a reflexão e o equilíbrio no dia a dia.";
+      }
+
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "<h2>O seu perfil: " + perfil +
+        "</h2><p>" + descricao +
+        "</p><p>Este resultado é apenas recreativo, não é uma avaliação psicológica.</p>";
+
+      resultado.style.display = "block";
+      resultado.scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
